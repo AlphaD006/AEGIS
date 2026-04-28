@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AEGIS — Anti-Piracy Intelligence Platform Design System
+   All colors in HSL. Tokens defined here, consumed via Tailwind classes. */
+
+@layer base {
+  :root {
+    /* Surfaces */
+    --bg-void: 240 56% 3%;          /* #03030a */
+    --bg-surface: 240 50% 6%;       /* #080818 */
+    --bg-elevated: 240 50% 9%;      /* #0d0d22 */
+    --border-subtle: 240 38% 14%;   /* #151530 */
+    --border-glow: 240 43% 18%;     /* #1a1a40 */
+
+    /* Threat & status */
+    --red-critical: 0 100% 59%;     /* #ff2d2d */
+    --orange-high: 25 100% 50%;     /* #ff6a00 */
+    --yellow-medium: 47 91% 53%;    /* #f5c518 */
+    --green-safe: 152 100% 50%;     /* #00ff88 */
+    --blue-intel: 199 92% 64%;      /* #4fc3f7 */
+    --purple-ai: 262 83% 58%;       /* #7c3aed */
+
+    /* Text */
+    --text-primary: 240 100% 97%;   /* #f0f0ff */
+    --text-secondary: 240 25% 69%;  /* #a0a0c0 */
+    --text-muted: 240 17% 38%;      /* #505070 */
+
+    /* shadcn mapping */
+    --background: var(--bg-void);
+    --foreground: var(--text-primary);
+    --card: var(--bg-elevated);
+    --card-foreground: var(--text-primary);
+    --popover: var(--bg-elevated);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--red-critical);
+    --primary-foreground: var(--text-primary);
+    --secondary: var(--bg-surface);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--bg-surface);
+    --muted-foreground: var(--text-secondary);
+    --accent: var(--blue-intel);
+    --accent-foreground: var(--bg-void);
+    --destructive: var(--red-critical);
+    --destructive-foreground: var(--text-primary);
+    --border: var(--border-subtle);
+    --input: var(--border-subtle);
+    --ring: var(--red-critical);
+    --radius: 0.5rem;
+
+    --sidebar-background: var(--bg-surface);
+    --sidebar-foreground: var(--text-secondary);
+    --sidebar-primary: var(--red-critical);
+    --sidebar-primary-foreground: var(--text-primary);
+    --sidebar-accent: var(--bg-elevated);
+    --sidebar-accent-foreground: var(--text-primary);
+    --sidebar-border: var(--border-subtle);
+    --sidebar-ring: var(--red-critical);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    @apply bg-void text-text-primary;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  body {
+    background-color: hsl(var(--bg-void));
+    background-image:
+      radial-gradient(circle at 20% 10%, hsl(var(--purple-ai) / 0.08), transparent 50%),
+      radial-gradient(circle at 80% 80%, hsl(var(--blue-intel) / 0.06), transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .font-display { font-family: 'Space Grotesk', sans-serif; }
+  .font-mono    { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  /* Glassmorphism panel */
+  .glass {
+    background-color: hsl(var(--text-primary) / 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--text-primary) / 0.08);
+  }
+
+  .glass-elevated {
+    background-color: hsl(var(--bg-elevated) / 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border-glow));
+  }
+
+  /* Scanline overlay for panels */
+  .scanlines {
+    position: relative;
+  }
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      0deg,
+      hsl(var(--text-primary) / 0.025) 0,
+      hsl(var(--text-primary) / 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  /* Noise grain on void */
+  .noise {
+    position: relative;
+  }
+  .noise::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-glow-red   { text-shadow: 0 0 16px hsl(var(--red-critical) / 0.6); }
+  .text-glow-green { text-shadow: 0 0 12px hsl(var(--green-safe) / 0.6); }
+  .text-glow-blue  { text-shadow: 0 0 12px hsl(var(--blue-intel) / 0.6); }
+}
+
+/* Marching ants for propagation edges */
+@keyframes aegis-dash {
+  to { stroke-dashoffset: -20; }
+}
+.edge-marching {
+  animation: aegis-dash 1s linear infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: hsl(var(--bg-void)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border-glow)); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--blue-intel) / 0.5); }
